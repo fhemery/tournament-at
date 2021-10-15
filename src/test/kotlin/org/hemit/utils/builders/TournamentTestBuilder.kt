@@ -2,19 +2,19 @@ package org.hemit.utils.builders
 
 import org.hemit.domain.model.IndividualParticipant
 import org.hemit.domain.model.Participant
-import org.hemit.domain.model.SwissRoundTournament
+import org.hemit.domain.model.Tournament
 
-class SwissRoundTournamentBuilder {
+class TournamentTestBuilder {
 
     var name = "Tournament"
     var participants: List<Participant> = emptyList()
 
-    fun withName(name: String): SwissRoundTournamentBuilder {
+    fun withName(name: String): TournamentTestBuilder {
         this.name = name
         return this
     }
 
-    fun withRandomParticipants(nbParticipants: Int): SwissRoundTournamentBuilder {
+    fun withRandomParticipants(nbParticipants: Int): TournamentTestBuilder {
         val participants = mutableListOf<Participant>()
         for (nb in 0 until nbParticipants) {
             participants.add(IndividualParticipant("Player$nb", (0..1000).random()))
@@ -23,7 +23,7 @@ class SwissRoundTournamentBuilder {
         return this
     }
 
-    fun build(): SwissRoundTournament {
-        return SwissRoundTournament("default", name, participants)
+    fun build(): Tournament {
+        return Tournament("default", name, participants)
     }
 }

@@ -1,10 +1,7 @@
 package org.hemit.acceptance.tournament
 
 import org.hemit.BaseAcceptanceTest
-import org.hemit.domain.model.SingleBracketTournament
-import org.hemit.domain.model.SwissRoundTournament
 import org.hemit.domain.model.TournamentToCreate
-import org.hemit.domain.model.TournamentType
 import org.hemit.domain.ports.input.commands.CreateTournamentCommand
 import org.hemit.domain.ports.input.commands.CreateTournamentResult
 import org.hemit.domain.ports.input.queries.GetTournamentQuery
@@ -32,8 +29,7 @@ class CreateTournamentTests : BaseAcceptanceTest() {
     fun `should assign an Id to the tournament for later reuse`() {
         val result = createTournamentCommand.execute(
             TournamentToCreate(
-                "Unreal Tournament",
-                TournamentType.SingleBracketElimination
+                "Unreal Tournament"
             )
         )
 
@@ -41,36 +37,23 @@ class CreateTournamentTests : BaseAcceptanceTest() {
     }
 
     @Test
-    fun `should return a single bracket tournament when it was the created type`() {
-        val tournamentId = createTournament(createTournamentCommand, "Bracket", TournamentType.SingleBracketElimination)
+    fun `should return a tournament`() {
+        val tournamentId =
+            createTournament(createTournamentCommand, "Bracket")
 
         val getResult = getTournamentQuery.execute(tournamentId)
 
         expectThat(getResult).isA<GetTournamentQueryResult.Success>().and {
-            get { tournament }.isA<SingleBracketTournament>()
-            get { tournament.id }.isEqualTo(tournamentId)
-        }
-    }
-
-    @Test
-    fun `should return a swiss round tournament when it was the requested type`() {
-        val tournamentId = createTournament(createTournamentCommand, "Swiss", TournamentType.SwissRound)
-
-        val getResult = getTournamentQuery.execute(tournamentId)
-
-        expectThat(getResult).isA<GetTournamentQueryResult.Success>().and {
-            get { tournament }.isA<SwissRoundTournament>()
             get { tournament.id }.isEqualTo(tournamentId)
         }
     }
 
     private fun createTournament(
         createTournamentCommand: CreateTournamentCommand,
-        name: String,
-        type: TournamentType
+        name: String
     ): String {
         val result = createTournamentCommand.execute(
-            TournamentToCreateBuilder().withName(name).withType(type).build()
+            TournamentToCreateBuilder().withName(name).build()
         )
         expectThat(result).isA<CreateTournamentResult.Success>().get { tournamentId }.isNotEqualTo("")
         return (result as CreateTournamentResult.Success).tournamentId

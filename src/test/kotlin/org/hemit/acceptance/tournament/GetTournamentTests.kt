@@ -1,7 +1,7 @@
 package org.hemit.acceptance.tournament
 
 import org.hemit.BaseAcceptanceTest
-import org.hemit.domain.model.SingleBracketTournament
+import org.hemit.domain.model.Tournament
 import org.hemit.domain.ports.input.queries.GetTournamentQuery
 import org.hemit.domain.ports.input.queries.GetTournamentQueryResult
 import org.junit.jupiter.api.BeforeEach
@@ -21,7 +21,7 @@ class GetTournamentTests : BaseAcceptanceTest() {
 
     @Test
     fun `should return the tournament if it exists in storage`() {
-        tournamentStoragePort.saveTournament(SingleBracketTournament("1", "Tournament"))
+        tournamentStoragePort.saveTournament(Tournament("1", "Tournament"))
 
         val result = tournamentQuery.execute("1")
 

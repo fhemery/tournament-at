@@ -1,6 +1,6 @@
 package org.hemit.domain.model
 
-enum class TournamentType {
+enum class TournamentPhaseType {
     SingleBracketElimination,
     SwissRound
 }
