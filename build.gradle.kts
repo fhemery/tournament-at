@@ -24,6 +24,10 @@ dependencies {
     implementation("io.quarkus:quarkus-arc")
     testImplementation("io.quarkus:quarkus-junit5")
     testImplementation("io.rest-assured:rest-assured")
+    testImplementation("io.mockk:mockk:1.10.0")
+    testImplementation("com.tngtech.archunit:archunit-junit5:0.17.0")
+    testImplementation("io.strikt:strikt-core:0.31.0")
+
 }
 
 group = "org.hemit"
