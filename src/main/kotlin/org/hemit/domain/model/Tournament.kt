@@ -13,4 +13,8 @@ class Tournament(
         ParticipantPolicy().checkParticipantCanBeAdded(this, participant)
         participants += participant
     }
+
+    fun addPhase(phase: TournamentPhase) {
+        phases += phase
+    }
 }
