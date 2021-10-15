@@ -5,14 +5,18 @@ import org.hemit.domain.model.TournamentToCreate
 import org.hemit.domain.ports.output.IdGeneration
 import org.hemit.domain.ports.output.TournamentStorage
 
-class CreateTournamentCommand(val tournamentStoragePort: TournamentStorage, private val idGeneratorPort: IdGeneration) {
+class CreateTournamentCommand(
+    private val tournamentStoragePort: TournamentStorage,
+    private val idGeneratorPort: IdGeneration
+) {
 
     fun execute(tournamentToCreate: TournamentToCreate): CreateTournamentResult {
         val tournament = TournamentBuilder.from(tournamentToCreate, idGeneratorPort.generateId())
+        tournamentStoragePort.saveTournament(tournament)
         return CreateTournamentResult.Success(tournament.id)
     }
 }
 
-sealed class CreateTournamentResult{
-    class Success(val tournamentId: String): CreateTournamentResult()
+sealed class CreateTournamentResult {
+    class Success(val tournamentId: String) : CreateTournamentResult()
 }

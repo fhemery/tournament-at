@@ -1,15 +1,16 @@
 package org.hemit.domain.ports.input.queries
 
 import org.hemit.domain.model.Tournament
-import org.hemit.domain.model.TournamentType
+import org.hemit.domain.ports.output.TournamentStorage
 
-class GetTournamentQuery {
+class GetTournamentQuery(private val tournamentStoragePort: TournamentStorage) {
     fun execute(id: String): GetTournamentQueryResult {
-        return GetTournamentQueryResult.TournamentDoesNotExist
+        val tournament = tournamentStoragePort.getTournament(id)
+        return GetTournamentQueryResult.Success(tournament ?: throw Exception("Gah"))
     }
 }
 
 sealed class GetTournamentQueryResult {
-    class Success(val tournament: Tournament): GetTournamentQueryResult()
-    object TournamentDoesNotExist: GetTournamentQueryResult()
+    class Success(val tournament: Tournament) : GetTournamentQueryResult()
+    object TournamentDoesNotExist : GetTournamentQueryResult()
 }
