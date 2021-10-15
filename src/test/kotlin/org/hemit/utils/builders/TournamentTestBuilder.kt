@@ -34,4 +34,9 @@ class TournamentTestBuilder {
         maxParticipants = max
         return this
     }
+
+    fun withPhase(phase: TournamentPhase): TournamentTestBuilder {
+        this.phases += phase
+        return this
+    }
 }
