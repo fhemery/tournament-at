@@ -1,17 +1,16 @@
 package org.hemit.domain.model
 
-import org.hemit.domain.model.exceptions.ParticipantAlreadyExistsForTournamentError
+import org.hemit.domain.model.policies.ParticipantPolicy
 
 class Tournament(
     val id: String,
     val name: String,
     var participants: List<Participant> = emptyList(),
-    var phases: List<TournamentPhase> = emptyList()
+    var phases: List<TournamentPhase> = emptyList(),
+    val maxParticipants: Int = Int.MAX_VALUE
 ) {
     fun addParticipant(participant: Participant) {
-        if (participants.find { it.name == participant.name } != null) {
-            throw ParticipantAlreadyExistsForTournamentError()
-        }
+        ParticipantPolicy().checkParticipantCanBeAdded(this, participant)
         participants += participant
     }
 }

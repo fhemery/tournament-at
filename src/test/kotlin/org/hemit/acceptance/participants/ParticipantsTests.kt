@@ -53,4 +53,14 @@ class ParticipantsTests : BaseAcceptanceTest() {
         expectThat(result).isA<AddParticipantCommandResult.AlreadyParticipating>()
         expectThat(tournamentStoragePort.getTournament(tournament.id)!!.participants).hasSize(5)
     }
+
+    @Test
+    fun `should return error if max participants is reached`() {
+        val tournament = TournamentTestBuilder().withMaxParticipants(10).withRandomParticipants(10).build()
+        tournamentStoragePort.saveTournament(tournament)
+
+        val result = addParticipantCommand.execute(tournament.id, IndividualParticipant("Carol", 1200))
+        expectThat(result).isA<AddParticipantCommandResult.MaximumParticipantsReached>()
+        expectThat(tournamentStoragePort.getTournament(tournament.id)!!.participants).hasSize(10)
+    }
 }

@@ -3,11 +3,14 @@ package org.hemit.utils.builders
 import org.hemit.domain.model.IndividualParticipant
 import org.hemit.domain.model.Participant
 import org.hemit.domain.model.Tournament
+import org.hemit.domain.model.TournamentPhase
 
 class TournamentTestBuilder {
 
     var name = "Tournament"
+    var maxParticipants = 256
     var participants: List<Participant> = emptyList()
+    var phases: List<TournamentPhase> = emptyList()
 
     fun withName(name: String): TournamentTestBuilder {
         this.name = name
@@ -24,6 +27,11 @@ class TournamentTestBuilder {
     }
 
     fun build(): Tournament {
-        return Tournament("default", name, participants)
+        return Tournament("default", name, participants, phases, maxParticipants)
+    }
+
+    fun withMaxParticipants(max: Int): TournamentTestBuilder {
+        maxParticipants = max
+        return this
     }
 }
