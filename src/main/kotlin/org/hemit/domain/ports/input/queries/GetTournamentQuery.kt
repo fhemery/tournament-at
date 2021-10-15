@@ -5,8 +5,9 @@ import org.hemit.domain.ports.output.TournamentStorage
 
 class GetTournamentQuery(private val tournamentStoragePort: TournamentStorage) {
     fun execute(id: String): GetTournamentQueryResult {
-        val tournament = tournamentStoragePort.getTournament(id)
-        return GetTournamentQueryResult.Success(tournament ?: throw Exception("Gah"))
+        val tournament =
+            tournamentStoragePort.getTournament(id) ?: return GetTournamentQueryResult.TournamentDoesNotExist
+        return GetTournamentQueryResult.Success(tournament)
     }
 }
 

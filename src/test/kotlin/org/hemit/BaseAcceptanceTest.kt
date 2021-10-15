@@ -1,7 +1,7 @@
 package org.hemit
 
-import org.hemit.ports.IdGeneratorStub
-import org.hemit.ports.TournamentStorageStub
+import org.hemit.utils.ports.IdGeneratorStub
+import org.hemit.utils.ports.TournamentStorageStub
 import org.junit.jupiter.api.BeforeEach
 
 open class BaseAcceptanceTest {

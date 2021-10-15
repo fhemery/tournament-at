@@ -1,4 +1,4 @@
-package org.hemit.tournament
+package org.hemit.acceptance.tournament
 
 import org.hemit.BaseAcceptanceTest
 import org.hemit.domain.model.SingleBracketTournament
