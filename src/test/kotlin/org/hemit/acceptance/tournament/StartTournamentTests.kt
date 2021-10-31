@@ -1,12 +1,12 @@
 package org.hemit.acceptance.tournament
 
 import org.hemit.BaseAcceptanceTest
+import org.hemit.domain.model.RoundRobinTournamentPhase
 import org.hemit.domain.model.SingleEliminationBracketTournamentPhase
-import org.hemit.domain.model.SwissRoundTournamentPhase
 import org.hemit.domain.model.TournamentStatus
 import org.hemit.domain.ports.input.commands.StartTournamentCommand
 import org.hemit.domain.ports.input.commands.StartTournamentResult
-import org.hemit.domain.ports.input.queries.GetTournamentQueryResult
+import org.hemit.domain.ports.output.GetTournamentResult
 import org.hemit.utils.builders.TournamentTestBuilder
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -36,7 +36,7 @@ class StartTournamentTests : BaseAcceptanceTest() {
         expectThat(result).isA<StartTournamentResult.Success>()
 
         val tournamentInStorage = tournamentStoragePort.getTournament(tournament.id)
-        expectThat(tournamentInStorage).isA<GetTournamentQueryResult.Success>().and {
+        expectThat(tournamentInStorage).isA<GetTournamentResult.Success>().and {
             get { tournament.status }.isEqualTo(TournamentStatus.Started)
         }
     }
@@ -85,7 +85,7 @@ class StartTournamentTests : BaseAcceptanceTest() {
 
     @Test
     fun `should set the nextPhase to the first one`() {
-        val tournament = TournamentTestBuilder().withRandomParticipants(8).withPhase(SwissRoundTournamentPhase())
+        val tournament = TournamentTestBuilder().withRandomParticipants(8).withPhase(RoundRobinTournamentPhase())
             .withPhase(SingleEliminationBracketTournamentPhase())
             .build()
 
@@ -96,8 +96,8 @@ class StartTournamentTests : BaseAcceptanceTest() {
         expectThat(result).isA<StartTournamentResult.Success>()
 
         val tournamentInStorage = tournamentStoragePort.getTournament(tournament.id)
-        expectThat(tournamentInStorage).isA<GetTournamentQueryResult.Success>().and {
-            get { tournament.currentPhase }.isNotNull().isA<SwissRoundTournamentPhase>()
+        expectThat(tournamentInStorage).isA<GetTournamentResult.Success>().and {
+            get { tournament.currentPhase }.isNotNull().isA<RoundRobinTournamentPhase>()
         }
     }
 }

@@ -3,7 +3,7 @@ package org.hemit.outsidein
 import org.hemit.domain.ports.input.commands.CreateTournamentCommand
 import org.hemit.domain.ports.input.queries.GetTournamentQuery
 import org.hemit.infra.api.TournamentResource
-import org.hemit.infra.api.dto.TournamentDto
+import org.hemit.infra.api.dto.TournamentToCreateDto
 import org.hemit.utils.ports.IdGeneratorStub
 import org.hemit.utils.ports.TournamentStorageStub
 import org.junit.jupiter.api.BeforeEach
@@ -33,7 +33,7 @@ class TournamentTests {
 
     @Test
     fun `should enable to retrieve tournament after creation`() {
-        val creationResponse = tournamentResource.createTournament(TournamentDto("Unreal tournament"))
+        val creationResponse = tournamentResource.createTournament(TournamentToCreateDto("Unreal tournament"))
         expectThat(creationResponse.status).isEqualTo(201)
 
         val id = creationResponse.headers["location"]!!.first().toString().split("/").last()

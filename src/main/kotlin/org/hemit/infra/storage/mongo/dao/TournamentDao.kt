@@ -12,9 +12,11 @@ class TournamentDao() : PanacheMongoEntity() {
 
     lateinit var identifier: String
     lateinit var name: String
+    lateinit var phases: List<TournamentPhaseDao>
 
-    constructor(id: String, name: String) : this() {
+    constructor(id: String, name: String, phases: List<TournamentPhaseDao> = emptyList()) : this() {
         this.identifier = id
         this.name = name
+        this.phases = phases
     }
 }
