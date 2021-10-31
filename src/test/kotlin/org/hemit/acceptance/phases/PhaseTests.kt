@@ -5,6 +5,7 @@ import org.hemit.domain.model.SingleEliminationBracketTournamentPhase
 import org.hemit.domain.model.TournamentPhaseType
 import org.hemit.domain.ports.input.commands.AddTournamentPhaseCommand
 import org.hemit.domain.ports.input.commands.AddTournamentPhaseResult
+import org.hemit.domain.ports.output.GetTournamentResult
 import org.hemit.utils.builders.TournamentTestBuilder
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -29,8 +30,10 @@ class PhaseTests : BaseAcceptanceTest() {
         val result = addPhaseCommand.execute(tournament.id, SingleEliminationBracketTournamentPhase())
 
         expectThat(result).isA<AddTournamentPhaseResult.Success>()
-        expectThat(tournamentStoragePort.getTournament(tournament.id)!!.phases).hasSize(1).and {
-            get { first().type }.isEqualTo(TournamentPhaseType.SingleBracketElimination)
+        expectThat(tournamentStoragePort.getTournament(tournament.id)).isA<GetTournamentResult.Success>().and {
+            get { tournament.phases }.hasSize(1).and {
+                get { first().type }.isEqualTo(TournamentPhaseType.SingleBracketElimination)
+            }
         }
     }
 

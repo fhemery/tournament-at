@@ -4,6 +4,7 @@ import org.hemit.BaseAcceptanceTest
 import org.hemit.domain.model.IndividualParticipant
 import org.hemit.domain.ports.input.commands.AddParticipantCommand
 import org.hemit.domain.ports.input.commands.AddParticipantCommandResult
+import org.hemit.domain.ports.output.GetTournamentResult
 import org.hemit.utils.builders.TournamentTestBuilder
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -11,7 +12,6 @@ import strikt.api.expectThat
 import strikt.assertions.contains
 import strikt.assertions.hasSize
 import strikt.assertions.isA
-import strikt.assertions.isNotNull
 
 class ParticipantsTests : BaseAcceptanceTest() {
 
@@ -32,8 +32,8 @@ class ParticipantsTests : BaseAcceptanceTest() {
 
         expectThat(result).isA<AddParticipantCommandResult.Success>()
         expectThat(tournamentStoragePort.getTournament(tournament.id))
-            .isNotNull().and {
-                get { participants }.contains(newParticipant)
+            .isA<GetTournamentResult.Success>().and {
+                get { tournament.participants }.contains(newParticipant)
             }
     }
 
@@ -51,7 +51,9 @@ class ParticipantsTests : BaseAcceptanceTest() {
         val result = addParticipantCommand.execute(tournament.id, tournament.participants.first())
 
         expectThat(result).isA<AddParticipantCommandResult.AlreadyParticipating>()
-        expectThat(tournamentStoragePort.getTournament(tournament.id)!!.participants).hasSize(5)
+        expectThat(tournamentStoragePort.getTournament(tournament.id)).isA<GetTournamentResult.Success>().and {
+            get { tournament.participants }.hasSize(5)
+        }
     }
 
     @Test
@@ -61,6 +63,8 @@ class ParticipantsTests : BaseAcceptanceTest() {
 
         val result = addParticipantCommand.execute(tournament.id, IndividualParticipant("Carol", 1200))
         expectThat(result).isA<AddParticipantCommandResult.MaximumParticipantsReached>()
-        expectThat(tournamentStoragePort.getTournament(tournament.id)!!.participants).hasSize(10)
+        expectThat(tournamentStoragePort.getTournament(tournament.id)).isA<GetTournamentResult.Success>().and {
+            get { tournament.participants }.hasSize(10)
+        }
     }
 }

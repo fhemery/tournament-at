@@ -1,14 +1,13 @@
 package org.hemit.domain.ports.output
 
 import org.hemit.domain.model.Tournament
-import org.hemit.domain.model.TournamentToCreate
 
 interface TournamentStorage {
     fun saveTournament(tournament: Tournament)
-    fun getTournament(tournamentId: String): Tournament?
+    fun getTournament(tournamentId: String): GetTournamentResult
 }
 
 sealed class GetTournamentResult {
-    class Success(tournament: Tournament): GetTournamentResult()
-    object TournamentDoesNotExist: GetTournamentResult()
+    class Success(val tournament: Tournament) : GetTournamentResult()
+    object TournamentDoesNotExist : GetTournamentResult()
 }

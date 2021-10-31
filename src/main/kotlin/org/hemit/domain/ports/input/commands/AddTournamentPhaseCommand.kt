@@ -1,12 +1,26 @@
 package org.hemit.domain.ports.input.commands
 
 import org.hemit.domain.model.TournamentPhase
+import org.hemit.domain.ports.output.GetTournamentResult
 import org.hemit.domain.ports.output.TournamentStorage
+import javax.enterprise.context.ApplicationScoped
+import javax.inject.Inject
 
-class AddTournamentPhaseCommand(private val tournamentStorage: TournamentStorage) {
+@ApplicationScoped
+class AddTournamentPhaseCommand() {
+
+    constructor(tournamentStorage: TournamentStorage) : this() {
+        this.tournamentStorage = tournamentStorage
+    }
+
+    @Inject
+    lateinit var tournamentStorage: TournamentStorage
+
     fun execute(tournamentId: String, phase: TournamentPhase): AddTournamentPhaseResult {
-        val tournament =
-            tournamentStorage.getTournament(tournamentId) ?: return AddTournamentPhaseResult.TournamentDoesNotExist
+        val tournament = when (val result = tournamentStorage.getTournament(tournamentId)) {
+            is GetTournamentResult.Success -> result.tournament
+            GetTournamentResult.TournamentDoesNotExist -> return AddTournamentPhaseResult.TournamentDoesNotExist
+        }
 
         tournament.addPhase(phase)
 

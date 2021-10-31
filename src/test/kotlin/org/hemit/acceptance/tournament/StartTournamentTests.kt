@@ -6,6 +6,7 @@ import org.hemit.domain.model.SwissRoundTournamentPhase
 import org.hemit.domain.model.TournamentStatus
 import org.hemit.domain.ports.input.commands.StartTournamentCommand
 import org.hemit.domain.ports.input.commands.StartTournamentResult
+import org.hemit.domain.ports.input.queries.GetTournamentQueryResult
 import org.hemit.utils.builders.TournamentTestBuilder
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -34,8 +35,10 @@ class StartTournamentTests : BaseAcceptanceTest() {
 
         expectThat(result).isA<StartTournamentResult.Success>()
 
-        val tournamentInStorage = tournamentStoragePort.getTournament(tournament.id)!!
-        expectThat(tournamentInStorage.status).isEqualTo(TournamentStatus.Started)
+        val tournamentInStorage = tournamentStoragePort.getTournament(tournament.id)
+        expectThat(tournamentInStorage).isA<GetTournamentQueryResult.Success>().and {
+            get { tournament.status }.isEqualTo(TournamentStatus.Started)
+        }
     }
 
     @Test
@@ -92,7 +95,9 @@ class StartTournamentTests : BaseAcceptanceTest() {
 
         expectThat(result).isA<StartTournamentResult.Success>()
 
-        val tournamentInStorage = tournamentStoragePort.getTournament(tournament.id)!!
-        expectThat(tournamentInStorage.currentPhase).isNotNull().isA<SwissRoundTournamentPhase>()
+        val tournamentInStorage = tournamentStoragePort.getTournament(tournament.id)
+        expectThat(tournamentInStorage).isA<GetTournamentQueryResult.Success>().and {
+            get { tournament.currentPhase }.isNotNull().isA<SwissRoundTournamentPhase>()
+        }
     }
 }

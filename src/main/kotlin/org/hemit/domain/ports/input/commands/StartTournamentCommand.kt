@@ -3,13 +3,26 @@ package org.hemit.domain.ports.input.commands
 import org.hemit.domain.model.exceptions.NotEnoughParticipantsException
 import org.hemit.domain.model.exceptions.TournamentAlreadyStartedException
 import org.hemit.domain.model.exceptions.TournamentHasNoPhaseException
+import org.hemit.domain.ports.output.GetTournamentResult
 import org.hemit.domain.ports.output.TournamentStorage
+import javax.enterprise.context.ApplicationScoped
+import javax.inject.Inject
 
-class StartTournamentCommand(private val tournamentStorage: TournamentStorage) {
+@ApplicationScoped
+class StartTournamentCommand() {
+
+    @Inject
+    lateinit var tournamentStorage: TournamentStorage
+
+    constructor(tournamentStorage: TournamentStorage) : this() {
+        this.tournamentStorage = tournamentStorage
+    }
 
     fun execute(tournamentId: String): StartTournamentResult {
-        val tournament =
-            tournamentStorage.getTournament(tournamentId) ?: return StartTournamentResult.TournamentDoesNotExist
+        val tournament = when (val result = tournamentStorage.getTournament(tournamentId)) {
+            is GetTournamentResult.Success -> result.tournament
+            GetTournamentResult.TournamentDoesNotExist -> return StartTournamentResult.TournamentDoesNotExist
+        }
 
         try {
             tournament.start()

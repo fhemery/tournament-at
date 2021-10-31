@@ -1,12 +1,26 @@
 package org.hemit.domain.ports.input.queries
 
 import org.hemit.domain.model.Tournament
+import org.hemit.domain.ports.output.GetTournamentResult
 import org.hemit.domain.ports.output.TournamentStorage
+import javax.enterprise.context.ApplicationScoped
+import javax.inject.Inject
 
-class GetTournamentQuery(private val tournamentStoragePort: TournamentStorage) {
+@ApplicationScoped
+class GetTournamentQuery() {
+
+    constructor(tournamentStorage: TournamentStorage) : this() {
+        this.tournamentStorage = tournamentStorage
+    }
+
+    @Inject
+    lateinit var tournamentStorage: TournamentStorage
+
     fun execute(id: String): GetTournamentQueryResult {
-        val tournament =
-            tournamentStoragePort.getTournament(id) ?: return GetTournamentQueryResult.TournamentDoesNotExist
+        val tournament = when (val result = tournamentStorage.getTournament(id)) {
+            is GetTournamentResult.Success -> result.tournament
+            GetTournamentResult.TournamentDoesNotExist -> return GetTournamentQueryResult.TournamentDoesNotExist
+        }
         return GetTournamentQueryResult.Success(tournament)
     }
 }

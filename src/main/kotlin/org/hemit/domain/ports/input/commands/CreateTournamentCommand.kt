@@ -4,11 +4,25 @@ import org.hemit.domain.model.TournamentBuilder
 import org.hemit.domain.model.TournamentToCreate
 import org.hemit.domain.ports.output.IdGeneration
 import org.hemit.domain.ports.output.TournamentStorage
+import javax.enterprise.context.ApplicationScoped
+import javax.inject.Inject
 
-class CreateTournamentCommand(
-    private val tournamentStoragePort: TournamentStorage,
-    private val idGeneratorPort: IdGeneration
-) {
+@ApplicationScoped
+class CreateTournamentCommand() {
+    constructor(
+        tournamentStoragePort: TournamentStorage,
+        idGeneratorPort: IdGeneration
+    ) : this() {
+        this.tournamentStoragePort = tournamentStoragePort
+        this.idGeneratorPort = idGeneratorPort
+    }
+
+    @Inject
+    lateinit var tournamentStoragePort: TournamentStorage
+
+    @Inject
+    lateinit var idGeneratorPort: IdGeneration
+
 
     fun execute(tournamentToCreate: TournamentToCreate): CreateTournamentResult {
         val tournament = TournamentBuilder.from(tournamentToCreate, idGeneratorPort.generateId())
