@@ -63,7 +63,7 @@ fun toMatch(match: Match): MatchDto {
     return MatchDto(
         if (match.opponent1 != null) toParticipantDto(match.opponent1) else null,
         if (match.opponent2 != null) toParticipantDto(match.opponent2) else null,
-        ""
+        match.id.toString()
     )
 }
 
