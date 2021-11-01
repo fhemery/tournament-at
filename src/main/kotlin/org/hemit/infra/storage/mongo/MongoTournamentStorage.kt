@@ -1,6 +1,7 @@
 package org.hemit.infra.storage.mongo
 
 import org.hemit.domain.model.*
+import org.hemit.domain.model.tournament.OngoingTournament
 import org.hemit.domain.model.tournament.RegisteredTournament
 import org.hemit.domain.model.tournament.Tournament
 import org.hemit.domain.model.tournament.TournamentStatus
@@ -20,6 +21,12 @@ class MongoTournamentStorage : TournamentStorage {
         } else if (tournament.status == TournamentStatus.NotStarted) {
             insertTournament(tournament as RegisteredTournament)
         }
+    }
+
+    override fun getTournament(tournamentId: String): GetTournamentResult {
+        return GetTournamentResult.Success(
+            toTournament(TournamentDao.findById(tournamentId) ?: return GetTournamentResult.TournamentDoesNotExist)
+        )
     }
 
     private fun insertTournament(registeredTournament: RegisteredTournament) {
@@ -50,20 +57,25 @@ class MongoTournamentStorage : TournamentStorage {
         return TournamentPhaseDao(it.type.name)
     }
 
-    override fun getTournament(tournamentId: String): GetTournamentResult {
-        return GetTournamentResult.Success(
-            toTournament(TournamentDao.findById(tournamentId) ?: return GetTournamentResult.TournamentDoesNotExist)
-        )
-    }
-
-    private fun toTournament(dao: TournamentDao): RegisteredTournament {
-        return RegisteredTournament(
-            dao.identifier,
-            dao.name,
-            dao.participants.map { toParticipant(it) },
-            dao.phases.map { toPhase(it) },
-            dao.maxParticipants
-        )
+    private fun toTournament(dao: TournamentDao): Tournament {
+        return when (dao.status) {
+            TournamentStatus.NotStarted.name ->
+                RegisteredTournament(
+                    dao.identifier,
+                    dao.name,
+                    dao.participants.map { toParticipant(it) },
+                    dao.phases.map { toPhase(it) },
+                    dao.maxParticipants
+                )
+            TournamentStatus.Started.name ->
+                OngoingTournament(
+                    dao.identifier,
+                    dao.name,
+                    dao.participants.map { toParticipant(it) },
+                    dao.phases.map { toPhase(it) },
+                )
+            else -> throw Exception("Unexpected tournament state ${dao.status}")
+        }
     }
 
     private fun toParticipant(it: ParticipantDao): Participant {

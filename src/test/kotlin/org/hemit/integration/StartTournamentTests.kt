@@ -7,7 +7,6 @@ import io.restassured.module.kotlin.extensions.When
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.hemit.infra.api.dto.*
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 @QuarkusTest
@@ -47,7 +46,6 @@ class StartTournamentTests {
     }
 
     @Test
-    @Disabled("Won't work until I refactor to be able to bubble up status from Repository")
     fun `should return 400 if tournament is already started`() {
         val id = createTournament()
         addParticipantToTournament(id, ParticipantDto("Alice", 123))
