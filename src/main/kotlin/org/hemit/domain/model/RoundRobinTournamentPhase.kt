@@ -3,7 +3,7 @@ package org.hemit.domain.model
 class RoundRobinTournamentPhase() : TournamentPhase {
     override fun computeMatches(participants: List<Participant>) {
         if (participants.size == 2) {
-            matches = listOf(Match(participants.first(), participants.last(), 1))
+            matches = listOf(Match(1, participants.last(), participants.first()))
             return
         }
 
@@ -18,9 +18,9 @@ class RoundRobinTournamentPhase() : TournamentPhase {
             for (partIndex in 0 until nbParticipants / 2) {
                 matches.add(
                     Match(
-                        evenParticipants[partIndex],
+                        idCounter++,
                         evenParticipants[nbParticipants / 2 + partIndex],
-                        idCounter++
+                        evenParticipants[partIndex]
                     )
                 )
             }
