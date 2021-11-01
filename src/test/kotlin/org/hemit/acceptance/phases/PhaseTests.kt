@@ -1,7 +1,7 @@
 package org.hemit.acceptance.phases
 
 import org.hemit.BaseAcceptanceTest
-import org.hemit.domain.model.SingleEliminationBracketTournamentPhase
+import org.hemit.domain.model.RoundRobinTournamentPhase
 import org.hemit.domain.model.TournamentPhaseType
 import org.hemit.domain.ports.input.commands.AddTournamentPhaseCommand
 import org.hemit.domain.ports.input.commands.AddTournamentPhaseResult
@@ -27,19 +27,19 @@ class PhaseTests : BaseAcceptanceTest() {
         val tournament = TournamentTestBuilder().build()
         tournamentStoragePort.saveTournament(tournament)
 
-        val result = addPhaseCommand.execute(tournament.id, SingleEliminationBracketTournamentPhase())
+        val result = addPhaseCommand.execute(tournament.id, RoundRobinTournamentPhase())
 
         expectThat(result).isA<AddTournamentPhaseResult.Success>()
         expectThat(tournamentStoragePort.getTournament(tournament.id)).isA<GetTournamentResult.Success>().and {
             get { tournament.phases }.hasSize(1).and {
-                get { first().type }.isEqualTo(TournamentPhaseType.SingleBracketElimination)
+                get { first().type }.isEqualTo(TournamentPhaseType.RoundRobin)
             }
         }
     }
 
     @Test
     fun `should return failure if tournament does not exist`() {
-        val result = addPhaseCommand.execute("Unknown", SingleEliminationBracketTournamentPhase())
+        val result = addPhaseCommand.execute("Unknown", RoundRobinTournamentPhase())
 
         expectThat(result).isA<AddTournamentPhaseResult.TournamentDoesNotExist>()
     }

@@ -40,7 +40,6 @@ class PhaseTests : BaseIntegrationTest() {
         expectThat(tournament.phases).hasSize(1).and {
             get { first().type }.isEqualTo(TournamentPhaseTypeDto.RoundRobin)
         }
-
     }
 
 }

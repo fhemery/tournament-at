@@ -1,7 +1,6 @@
 package org.hemit.infra.storage.mongo.dao
 
 import org.hemit.domain.model.RoundRobinTournamentPhase
-import org.hemit.domain.model.SingleEliminationBracketTournamentPhase
 import org.hemit.domain.model.TournamentPhase
 import org.hemit.domain.model.TournamentPhaseType
 
@@ -20,7 +19,6 @@ class TournamentPhaseDao() {
 
     fun toPhase(): TournamentPhase {
         return when (this.type) {
-            TournamentPhaseType.SingleBracketElimination.name -> SingleEliminationBracketTournamentPhase()
             TournamentPhaseType.RoundRobin.name -> RoundRobinTournamentPhase()
             else -> throw Exception("Unknown phase type ${this.type} coming from DB")
         }

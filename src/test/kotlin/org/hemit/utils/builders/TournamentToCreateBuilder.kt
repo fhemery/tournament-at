@@ -4,7 +4,7 @@ import org.hemit.domain.model.TournamentPhaseType
 import org.hemit.domain.model.tournament.TournamentToCreate
 
 class TournamentToCreateBuilder {
-    var type = TournamentPhaseType.SingleBracketElimination
+    var type = TournamentPhaseType.RoundRobin
     var name = "Default"
 
     fun withName(name: String): TournamentToCreateBuilder {

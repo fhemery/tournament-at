@@ -2,7 +2,10 @@ package org.hemit.infra.api.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import kotlinx.serialization.Serializable
-import org.hemit.domain.model.*
+import org.hemit.domain.model.Participant
+import org.hemit.domain.model.RoundRobinTournamentPhase
+import org.hemit.domain.model.TournamentPhase
+import org.hemit.domain.model.TournamentPhaseType
 import org.hemit.domain.model.tournament.Tournament
 import org.hemit.domain.model.tournament.TournamentStatus
 
@@ -25,7 +28,7 @@ enum class TournamentStatusDto { NotStarted, Started, Finished }
 class TournamentPhaseDto(@JsonProperty("type") val type: TournamentPhaseTypeDto)
 
 @Serializable
-enum class TournamentPhaseTypeDto { SingleBracketElimination, RoundRobin }
+enum class TournamentPhaseTypeDto { RoundRobin }
 
 
 private fun toTournamentStatusDto(status: TournamentStatus): TournamentStatusDto {
@@ -38,7 +41,6 @@ private fun toTournamentStatusDto(status: TournamentStatus): TournamentStatusDto
 
 private fun toTournamentPhaseTypeDto(type: TournamentPhaseType): TournamentPhaseTypeDto {
     return when (type) {
-        TournamentPhaseType.SingleBracketElimination -> TournamentPhaseTypeDto.SingleBracketElimination
         TournamentPhaseType.RoundRobin -> TournamentPhaseTypeDto.RoundRobin
     }
 }
@@ -52,7 +54,6 @@ fun toTournamentPhaseDto(it: TournamentPhase) =
 
 fun toTournamentPhase(phaseDto: TournamentPhaseDto): TournamentPhase {
     return when (phaseDto.type) {
-        TournamentPhaseTypeDto.SingleBracketElimination -> SingleEliminationBracketTournamentPhase()
         TournamentPhaseTypeDto.RoundRobin -> RoundRobinTournamentPhase()
     }
 }
