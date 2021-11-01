@@ -2,7 +2,7 @@ package org.hemit.utils.builders
 
 import org.hemit.domain.model.IndividualParticipant
 import org.hemit.domain.model.Participant
-import org.hemit.domain.model.Tournament
+import org.hemit.domain.model.tournament.RegisteredTournament
 import org.hemit.domain.model.TournamentPhase
 
 class TournamentTestBuilder {
@@ -26,8 +26,8 @@ class TournamentTestBuilder {
         return this
     }
 
-    fun build(): Tournament {
-        return Tournament("default", name, participants, phases, maxParticipants)
+    fun build(): RegisteredTournament {
+        return RegisteredTournament("default", name, participants, phases, maxParticipants)
     }
 
     fun withMaxParticipants(max: Int): TournamentTestBuilder {

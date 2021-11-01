@@ -1,6 +1,6 @@
 package org.hemit.domain.ports.input.queries
 
-import org.hemit.domain.model.Tournament
+import org.hemit.domain.model.tournament.Tournament
 import org.hemit.domain.ports.output.GetTournamentResult
 import org.hemit.domain.ports.output.TournamentStorage
 import javax.enterprise.context.ApplicationScoped

@@ -1,6 +1,6 @@
 package org.hemit.infra.api
 
-import org.hemit.domain.model.TournamentToCreate
+import org.hemit.domain.model.tournament.TournamentToCreate
 import org.hemit.domain.ports.input.commands.CreateTournamentCommand
 import org.hemit.domain.ports.input.commands.CreateTournamentResult
 import org.hemit.domain.ports.input.commands.StartTournamentCommand

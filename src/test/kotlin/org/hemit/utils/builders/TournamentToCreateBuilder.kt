@@ -1,7 +1,7 @@
 package org.hemit.utils.builders
 
 import org.hemit.domain.model.TournamentPhaseType
-import org.hemit.domain.model.TournamentToCreate
+import org.hemit.domain.model.tournament.TournamentToCreate
 
 class TournamentToCreateBuilder {
     var type = TournamentPhaseType.SingleBracketElimination

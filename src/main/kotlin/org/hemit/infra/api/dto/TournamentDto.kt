@@ -3,6 +3,8 @@ package org.hemit.infra.api.dto
 import com.fasterxml.jackson.annotation.JsonProperty
 import kotlinx.serialization.Serializable
 import org.hemit.domain.model.*
+import org.hemit.domain.model.tournament.Tournament
+import org.hemit.domain.model.tournament.TournamentStatus
 
 @Serializable
 data class TournamentDto(
@@ -55,13 +57,13 @@ fun toTournamentPhase(phaseDto: TournamentPhaseDto): TournamentPhase {
     }
 }
 
-fun toDto(tournament: Tournament): TournamentDto {
+fun toDto(tournamentSetup: Tournament): TournamentDto {
     return TournamentDto(
-        tournament.id,
-        tournament.name,
-        toTournamentStatusDto(tournament.status),
-        toTournamentPhases(tournament.phases),
-        toTournamentParticipants(tournament.participants)
+        tournamentSetup.id,
+        tournamentSetup.name,
+        toTournamentStatusDto(tournamentSetup.status),
+        toTournamentPhases(tournamentSetup.phases),
+        toTournamentParticipants(tournamentSetup.participants)
     )
 }
 

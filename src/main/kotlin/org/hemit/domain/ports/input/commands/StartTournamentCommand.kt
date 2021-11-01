@@ -1,5 +1,7 @@
 package org.hemit.domain.ports.input.commands
 
+import org.hemit.domain.model.tournament.RegisteredTournament
+import org.hemit.domain.model.tournament.TournamentStatus
 import org.hemit.domain.model.exceptions.NotEnoughParticipantsException
 import org.hemit.domain.model.exceptions.TournamentAlreadyStartedException
 import org.hemit.domain.model.exceptions.TournamentHasNoPhaseException
@@ -25,9 +27,12 @@ class StartTournamentCommand() {
         }
 
         try {
-            tournament.start()
+            if (tournament.status != TournamentStatus.NotStarted) {
+                return StartTournamentResult.TournamentAlreadyStarted
+            }
+            val ongoingTournament = (tournament as RegisteredTournament).start()
 
-            tournamentStorage.saveTournament(tournament)
+            tournamentStorage.saveTournament(ongoingTournament)
         } catch (e: NotEnoughParticipantsException) {
             return StartTournamentResult.NotEnoughParticipants
         } catch (e: TournamentAlreadyStartedException) {

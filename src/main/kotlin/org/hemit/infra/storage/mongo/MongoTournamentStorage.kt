@@ -1,6 +1,9 @@
 package org.hemit.infra.storage.mongo
 
 import org.hemit.domain.model.*
+import org.hemit.domain.model.tournament.RegisteredTournament
+import org.hemit.domain.model.tournament.Tournament
+import org.hemit.domain.model.tournament.TournamentStatus
 import org.hemit.domain.ports.output.GetTournamentResult
 import org.hemit.domain.ports.output.TournamentStorage
 import org.hemit.infra.storage.mongo.dao.ParticipantDao
@@ -14,19 +17,19 @@ class MongoTournamentStorage : TournamentStorage {
         val tournamentDao = TournamentDao.findById(tournament.id)
         if (tournamentDao != null) {
             updateTournament(tournamentDao, tournament)
-        } else {
-            insertTournament(tournament)
+        } else if (tournament.status == TournamentStatus.NotStarted) {
+            insertTournament(tournament as RegisteredTournament)
         }
     }
 
-    private fun insertTournament(tournament: Tournament) {
+    private fun insertTournament(registeredTournament: RegisteredTournament) {
         val dao = TournamentDao(
-            tournament.id,
-            tournament.name,
-            tournament.phases.map { toPhaseDao(it) },
-            tournament.participants.map { toParticipantDao(it) },
-            tournament.maxParticipants,
-            tournament.status.name
+            registeredTournament.id,
+            registeredTournament.name,
+            registeredTournament.phases.map { toPhaseDao(it) },
+            registeredTournament.participants.map { toParticipantDao(it) },
+            registeredTournament.maxParticipants,
+            registeredTournament.status.name
         )
         dao.persist()
     }
@@ -35,11 +38,11 @@ class MongoTournamentStorage : TournamentStorage {
         return ParticipantDao(it.name, it.elo)
     }
 
-    private fun updateTournament(tournamentDao: TournamentDao, tournament: Tournament) {
-        tournamentDao.name = tournament.name
-        tournamentDao.phases = tournament.phases.map { toPhaseDao(it) }
-        tournamentDao.participants = tournament.participants.map { toParticipantDao(it) }
-        tournamentDao.status = tournament.status.name
+    private fun updateTournament(tournamentDao: TournamentDao, tournamentSetup: Tournament) {
+        tournamentDao.name = tournamentSetup.name
+        tournamentDao.phases = tournamentSetup.phases.map { toPhaseDao(it) }
+        tournamentDao.participants = tournamentSetup.participants.map { toParticipantDao(it) }
+        tournamentDao.status = tournamentSetup.status.name
         tournamentDao.update()
     }
 
@@ -53,8 +56,8 @@ class MongoTournamentStorage : TournamentStorage {
         )
     }
 
-    private fun toTournament(dao: TournamentDao): Tournament {
-        return Tournament(
+    private fun toTournament(dao: TournamentDao): RegisteredTournament {
+        return RegisteredTournament(
             dao.identifier,
             dao.name,
             dao.participants.map { toParticipant(it) },

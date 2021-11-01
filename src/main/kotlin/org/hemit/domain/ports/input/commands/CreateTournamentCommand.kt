@@ -1,7 +1,7 @@
 package org.hemit.domain.ports.input.commands
 
-import org.hemit.domain.model.TournamentBuilder
-import org.hemit.domain.model.TournamentToCreate
+import org.hemit.domain.model.tournament.TournamentBuilder
+import org.hemit.domain.model.tournament.TournamentToCreate
 import org.hemit.domain.ports.output.IdGeneration
 import org.hemit.domain.ports.output.TournamentStorage
 import javax.enterprise.context.ApplicationScoped

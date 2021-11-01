@@ -1,6 +1,6 @@
 package org.hemit.domain.ports.output
 
-import org.hemit.domain.model.Tournament
+import org.hemit.domain.model.tournament.Tournament
 
 interface TournamentStorage {
     fun saveTournament(tournament: Tournament)

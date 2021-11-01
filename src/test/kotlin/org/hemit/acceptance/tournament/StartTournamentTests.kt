@@ -1,9 +1,10 @@
 package org.hemit.acceptance.tournament
 
 import org.hemit.BaseAcceptanceTest
+import org.hemit.domain.model.tournament.OngoingTournament
 import org.hemit.domain.model.RoundRobinTournamentPhase
 import org.hemit.domain.model.SingleEliminationBracketTournamentPhase
-import org.hemit.domain.model.TournamentStatus
+import org.hemit.domain.model.tournament.TournamentStatus
 import org.hemit.domain.ports.input.commands.StartTournamentCommand
 import org.hemit.domain.ports.input.commands.StartTournamentResult
 import org.hemit.domain.ports.output.GetTournamentResult
@@ -26,16 +27,16 @@ class StartTournamentTests : BaseAcceptanceTest() {
 
     @Test
     fun `should launch the tournament`() {
-        val tournament =
+        val initialTournament =
             TournamentTestBuilder().withRandomParticipants(8).withPhase(SingleEliminationBracketTournamentPhase())
                 .build()
-        tournamentStoragePort.saveTournament(tournament)
+        tournamentStoragePort.saveTournament(initialTournament)
 
-        val result = startTournamentCommand.execute(tournament.id)
+        val result = startTournamentCommand.execute(initialTournament.id)
 
         expectThat(result).isA<StartTournamentResult.Success>()
 
-        val tournamentInStorage = tournamentStoragePort.getTournament(tournament.id)
+        val tournamentInStorage = tournamentStoragePort.getTournament(initialTournament.id)
         expectThat(tournamentInStorage).isA<GetTournamentResult.Success>().and {
             get { tournament.status }.isEqualTo(TournamentStatus.Started)
         }
@@ -65,8 +66,8 @@ class StartTournamentTests : BaseAcceptanceTest() {
         val tournament =
             TournamentTestBuilder().withRandomParticipants(8).withPhase(SingleEliminationBracketTournamentPhase())
                 .build()
-        tournament.start()
-        tournamentStoragePort.saveTournament(tournament)
+        val startedTournament = tournament.start()
+        tournamentStoragePort.saveTournament(startedTournament)
 
         val result = startTournamentCommand.execute(tournament.id)
 
@@ -85,19 +86,21 @@ class StartTournamentTests : BaseAcceptanceTest() {
 
     @Test
     fun `should set the nextPhase to the first one`() {
-        val tournament = TournamentTestBuilder().withRandomParticipants(8).withPhase(RoundRobinTournamentPhase())
+        val initialTournament = TournamentTestBuilder().withRandomParticipants(8).withPhase(RoundRobinTournamentPhase())
             .withPhase(SingleEliminationBracketTournamentPhase())
             .build()
 
-        tournamentStoragePort.saveTournament(tournament)
+        tournamentStoragePort.saveTournament(initialTournament)
 
-        val result = startTournamentCommand.execute(tournament.id)
+        val result = startTournamentCommand.execute(initialTournament.id)
 
         expectThat(result).isA<StartTournamentResult.Success>()
 
-        val tournamentInStorage = tournamentStoragePort.getTournament(tournament.id)
+        val tournamentInStorage = tournamentStoragePort.getTournament(initialTournament.id)
         expectThat(tournamentInStorage).isA<GetTournamentResult.Success>().and {
-            get { tournament.currentPhase }.isNotNull().isA<RoundRobinTournamentPhase>()
+            get { tournament }.isA<OngoingTournament>().and {
+                get { currentPhase }.isNotNull().isA<RoundRobinTournamentPhase>()
+            }
         }
     }
 }
