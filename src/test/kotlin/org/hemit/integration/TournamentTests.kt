@@ -2,6 +2,7 @@ package org.hemit.integration
 
 import io.quarkus.test.junit.QuarkusTest
 import io.restassured.RestAssured
+import org.hemit.infra.api.dto.TournamentToCreateDto
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
@@ -20,7 +21,7 @@ class TournamentTests : BaseIntegrationTest() {
 
     @Test
     fun `should return the tournament with the id of creation`() {
-        val id = createTournament("Tour")
+        val id = createTournament(TournamentToCreateDto(name = "Tour"))
 
         expectThat(getTournament(id).name).isEqualTo("Tour")
     }

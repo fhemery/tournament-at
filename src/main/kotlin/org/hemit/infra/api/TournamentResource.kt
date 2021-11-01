@@ -30,7 +30,6 @@ class TournamentResource {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     fun getTournament(@PathParam("id") id: String): TournamentDto {
-        println("Fetching tournament with id $id")
         when (val result = getTournamentQuery.execute(id)) {
             is GetTournamentQueryResult.Success -> return toDto(result.tournament)
             GetTournamentQueryResult.TournamentDoesNotExist -> throw NotFoundException()
@@ -42,7 +41,8 @@ class TournamentResource {
     @Produces(MediaType.APPLICATION_JSON)
     @ResponseObject()
     fun createTournament(@Valid tournament: TournamentToCreateDto): Response {
-        when (val result = createTournamentCommand.execute(TournamentToCreate(tournament.name))) {
+        when (val result =
+            createTournamentCommand.execute(TournamentToCreate(tournament.name, tournament.maxParticipants))) {
             is CreateTournamentResult.Success -> return created(URI.create("tournaments/${result.tournamentId}")).build()
         }
     }

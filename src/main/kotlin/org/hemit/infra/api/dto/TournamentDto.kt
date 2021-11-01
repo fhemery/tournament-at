@@ -9,8 +9,12 @@ data class TournamentDto(
     val id: String,
     val name: String,
     val status: TournamentStatusDto,
-    val phases: List<TournamentPhaseDto>
+    val phases: List<TournamentPhaseDto>,
+    val participants: List<ParticipantDto>
 )
+
+@Serializable
+data class ParticipantDto(val name: String, val elo: Int)
 
 @Serializable
 enum class TournamentStatusDto { NotStarted, Started, Finished }
@@ -56,6 +60,11 @@ fun toDto(tournament: Tournament): TournamentDto {
         tournament.id,
         tournament.name,
         toTournamentStatusDto(tournament.status),
-        toTournamentPhases(tournament.phases)
+        toTournamentPhases(tournament.phases),
+        toTournamentParticipants(tournament.participants)
     )
+}
+
+fun toTournamentParticipants(participants: List<Participant>): List<ParticipantDto> {
+    return participants.map { ParticipantDto(it.name, it.elo) }
 }

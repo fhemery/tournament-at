@@ -6,13 +6,14 @@ import io.restassured.module.kotlin.extensions.When
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.hemit.infra.api.dto.ParticipantDto
 import org.hemit.infra.api.dto.TournamentDto
 import org.hemit.infra.api.dto.TournamentToCreateDto
 
-fun createTournament(name: String = "Unreal Tournament"): String {
+fun createTournament(tournament: TournamentToCreateDto = TournamentToCreateDto("Unreal tournament", 1024)): String {
     val response = Given {
         contentType("application/json")
-        body(Json.encodeToString(TournamentToCreateDto(name)))
+        body(Json.encodeToString(tournament))
     } When {
         post("/tournaments")
     } Then {
@@ -30,4 +31,15 @@ fun getTournament(id: String): TournamentDto {
     }
 
     return Json.decodeFromString(response.extract().asString())
+}
+
+fun addParticipantToTournament(id: String, participantDto: ParticipantDto) {
+    Given {
+        contentType("application/json")
+        body(Json.encodeToString(participantDto))
+    } When {
+        post("tournaments/${id}/participants")
+    } Then {
+        statusCode(204)
+    }
 }

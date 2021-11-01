@@ -3,6 +3,7 @@ package org.hemit.infra.storage.mongo
 import org.hemit.domain.model.*
 import org.hemit.domain.ports.output.GetTournamentResult
 import org.hemit.domain.ports.output.TournamentStorage
+import org.hemit.infra.storage.mongo.dao.ParticipantDao
 import org.hemit.infra.storage.mongo.dao.TournamentDao
 import org.hemit.infra.storage.mongo.dao.TournamentPhaseDao
 import javax.enterprise.context.ApplicationScoped
@@ -14,14 +15,29 @@ class MongoTournamentStorage : TournamentStorage {
         if (tournamentDao != null) {
             updateTournament(tournamentDao, tournament)
         } else {
-            val dao = TournamentDao(tournament.id, tournament.name, tournament.phases.map { toPhaseDao(it) })
-            dao.persist()
+            insertTournament(tournament)
         }
+    }
+
+    private fun insertTournament(tournament: Tournament) {
+        val dao = TournamentDao(
+            tournament.id,
+            tournament.name,
+            tournament.phases.map { toPhaseDao(it) },
+            tournament.participants.map { toParticipantDao(it) },
+            tournament.maxParticipants
+        )
+        dao.persist()
+    }
+
+    private fun toParticipantDao(it: Participant): ParticipantDao {
+        return ParticipantDao(it.name, it.elo)
     }
 
     private fun updateTournament(tournamentDao: TournamentDao, tournament: Tournament) {
         tournamentDao.name = tournament.name
         tournamentDao.phases = tournament.phases.map { toPhaseDao(it) }
+        tournamentDao.participants = tournament.participants.map { toParticipantDao(it) }
         tournamentDao.update()
     }
 
@@ -36,7 +52,17 @@ class MongoTournamentStorage : TournamentStorage {
     }
 
     private fun toTournament(dao: TournamentDao): Tournament {
-        return Tournament(dao.identifier, dao.name, phases = dao.phases.map { toPhase(it) })
+        return Tournament(
+            dao.identifier,
+            dao.name,
+            dao.participants.map { toParticipant(it) },
+            dao.phases.map { toPhase(it) },
+            dao.maxParticipants
+        )
+    }
+
+    private fun toParticipant(it: ParticipantDao): Participant {
+        return IndividualParticipant(it.name, it.elo)
     }
 
     private fun toPhase(it: TournamentPhaseDao): TournamentPhase {

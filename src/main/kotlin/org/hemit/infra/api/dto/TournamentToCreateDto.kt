@@ -5,4 +5,7 @@ import kotlinx.serialization.Serializable
 import javax.validation.constraints.NotBlank
 
 @Serializable
-data class TournamentToCreateDto(@field:NotBlank @JsonProperty("name") val name: String)
+data class TournamentToCreateDto(
+    @field:NotBlank @JsonProperty("name") val name: String,
+    val maxParticipants: Int = Int.MAX_VALUE
+)
