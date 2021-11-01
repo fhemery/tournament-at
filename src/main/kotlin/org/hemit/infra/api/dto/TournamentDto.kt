@@ -2,10 +2,7 @@ package org.hemit.infra.api.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import kotlinx.serialization.Serializable
-import org.hemit.domain.model.Participant
-import org.hemit.domain.model.RoundRobinTournamentPhase
-import org.hemit.domain.model.TournamentPhase
-import org.hemit.domain.model.TournamentPhaseType
+import org.hemit.domain.model.*
 import org.hemit.domain.model.tournament.Tournament
 import org.hemit.domain.model.tournament.TournamentStatus
 
@@ -25,7 +22,10 @@ data class ParticipantDto(val name: String, val elo: Int)
 enum class TournamentStatusDto { NotStarted, Started, Finished }
 
 @Serializable
-class TournamentPhaseDto(@JsonProperty("type") val type: TournamentPhaseTypeDto)
+class TournamentPhaseDto(@JsonProperty("type") val type: TournamentPhaseTypeDto, val matches: List<MatchDto>? = null)
+
+@Serializable
+class MatchDto(val opponent1: ParticipantDto?, val opponent2: ParticipantDto?)
 
 @Serializable
 enum class TournamentPhaseTypeDto { RoundRobin }
@@ -50,7 +50,21 @@ private fun toTournamentPhases(phases: List<TournamentPhase>): List<TournamentPh
 }
 
 fun toTournamentPhaseDto(it: TournamentPhase) =
-    TournamentPhaseDto(toTournamentPhaseTypeDto(it.type))
+    TournamentPhaseDto(toTournamentPhaseTypeDto(it.type), toMatches(it.matches))
+
+fun toMatches(matches: List<Match>): List<MatchDto>? {
+    if (matches.isEmpty()) {
+        return null
+    }
+    return matches.map { toMatch(it) }
+}
+
+fun toMatch(match: Match): MatchDto {
+    return MatchDto(
+        if (match.opponent1 != null) toParticipantDto(match.opponent1) else null,
+        if (match.opponent2 != null) toParticipantDto(match.opponent2) else null
+    )
+}
 
 fun toTournamentPhase(phaseDto: TournamentPhaseDto): TournamentPhase {
     return when (phaseDto.type) {
@@ -64,10 +78,10 @@ fun toDto(tournamentSetup: Tournament): TournamentDto {
         tournamentSetup.name,
         toTournamentStatusDto(tournamentSetup.status),
         toTournamentPhases(tournamentSetup.phases),
-        toTournamentParticipants(tournamentSetup.participants)
+        tournamentSetup.participants.map { toParticipantDto(it) }
     )
 }
 
-fun toTournamentParticipants(participants: List<Participant>): List<ParticipantDto> {
-    return participants.map { ParticipantDto(it.name, it.elo) }
+fun toParticipantDto(participant: Participant): ParticipantDto {
+    return ParticipantDto(participant.name, participant.elo)
 }

@@ -8,6 +8,10 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.hemit.infra.api.dto.*
 import org.junit.jupiter.api.Test
+import strikt.api.expectThat
+import strikt.assertions.hasSize
+import strikt.assertions.isEqualTo
+import strikt.assertions.isNotNull
 
 @QuarkusTest
 class StartTournamentTests {
@@ -43,6 +47,25 @@ class StartTournamentTests {
         addPhase(id, TournamentPhaseDto(TournamentPhaseTypeDto.RoundRobin))
 
         startTournamentReturnsStatusCode(id, 204)
+    }
+
+    @Test
+    fun `should return the matches of the tournament`() {
+        val id = createTournament()
+        addParticipantToTournament(id, ParticipantDto("Alice", 123))
+        addParticipantToTournament(id, ParticipantDto("Bob", 456))
+
+        addPhase(id, TournamentPhaseDto(TournamentPhaseTypeDto.RoundRobin))
+
+        startTournamentReturnsStatusCode(id, 204)
+
+        println("tournament id is $id")
+        val tournament = getTournament(id)
+        expectThat(tournament) {
+            get { status }.isEqualTo(TournamentStatusDto.Started)
+            get { phases }.hasSize(1)
+            get { phases.first().matches }.isNotNull().hasSize(1)
+        }
     }
 
     @Test

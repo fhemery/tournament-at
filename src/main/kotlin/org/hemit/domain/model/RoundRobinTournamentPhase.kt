@@ -1,6 +1,6 @@
 package org.hemit.domain.model
 
-class RoundRobinTournamentPhase : TournamentPhase {
+class RoundRobinTournamentPhase() : TournamentPhase {
     override fun computeMatches(participants: List<Participant>) {
         if (participants.size == 2) {
             matches = listOf(Match(participants.first(), participants.last()))
@@ -30,4 +30,8 @@ class RoundRobinTournamentPhase : TournamentPhase {
 
     override val type = TournamentPhaseType.RoundRobin
     override var matches: List<Match> = emptyList()
+
+    constructor(matches: List<Match>) : this() {
+        this.matches = matches
+    }
 }
