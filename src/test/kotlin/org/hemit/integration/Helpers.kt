@@ -8,6 +8,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.hemit.infra.api.dto.ParticipantDto
 import org.hemit.infra.api.dto.TournamentDto
+import org.hemit.infra.api.dto.TournamentPhaseDto
 import org.hemit.infra.api.dto.TournamentToCreateDto
 
 fun createTournament(tournament: TournamentToCreateDto = TournamentToCreateDto("Unreal tournament", 1024)): String {
@@ -39,6 +40,17 @@ fun addParticipantToTournament(id: String, participantDto: ParticipantDto) {
         body(Json.encodeToString(participantDto))
     } When {
         post("tournaments/${id}/participants")
+    } Then {
+        statusCode(204)
+    }
+}
+
+fun addPhase(id: String, tournamentPhaseDto: TournamentPhaseDto) {
+    Given {
+        contentType("application/json")
+        body(Json.encodeToString(tournamentPhaseDto))
+    } When {
+        post("/tournaments/$id/phases")
     } Then {
         statusCode(204)
     }

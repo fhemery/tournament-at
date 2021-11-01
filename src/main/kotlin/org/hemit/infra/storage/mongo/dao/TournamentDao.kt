@@ -15,18 +15,21 @@ class TournamentDao() : PanacheMongoEntity() {
     lateinit var phases: List<TournamentPhaseDao>
     lateinit var participants: List<ParticipantDao>
     var maxParticipants = Int.MAX_VALUE
+    lateinit var status: String
 
     constructor(
         id: String,
         name: String,
         phases: List<TournamentPhaseDao> = emptyList(),
         participants: List<ParticipantDao> = emptyList(),
-        maxParticipants: Int = Int.MAX_VALUE
+        maxParticipants: Int = Int.MAX_VALUE,
+        status: String
     ) : this() {
         this.identifier = id
         this.name = name
         this.phases = phases
         this.participants = participants
         this.maxParticipants = maxParticipants
+        this.status = status
     }
 }

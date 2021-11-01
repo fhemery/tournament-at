@@ -25,7 +25,8 @@ class MongoTournamentStorage : TournamentStorage {
             tournament.name,
             tournament.phases.map { toPhaseDao(it) },
             tournament.participants.map { toParticipantDao(it) },
-            tournament.maxParticipants
+            tournament.maxParticipants,
+            tournament.status.name
         )
         dao.persist()
     }
@@ -38,6 +39,7 @@ class MongoTournamentStorage : TournamentStorage {
         tournamentDao.name = tournament.name
         tournamentDao.phases = tournament.phases.map { toPhaseDao(it) }
         tournamentDao.participants = tournament.participants.map { toParticipantDao(it) }
+        tournamentDao.status = tournament.status.name
         tournamentDao.update()
     }
 

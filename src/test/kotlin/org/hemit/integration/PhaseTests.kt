@@ -34,14 +34,7 @@ class PhaseTests : BaseIntegrationTest() {
     fun `should return the phase in tournament details when tournament exists`() {
         val id = createTournament()
 
-        Given {
-            contentType("application/json")
-            body(Json.encodeToString(TournamentPhaseDto(TournamentPhaseTypeDto.RoundRobin)))
-        } When {
-            post("/tournaments/$id/phases")
-        } Then {
-            statusCode(204)
-        }
+        addPhase(id, TournamentPhaseDto(TournamentPhaseTypeDto.RoundRobin))
 
         val tournament = getTournament(id)
         expectThat(tournament.phases).hasSize(1).and {
@@ -49,4 +42,5 @@ class PhaseTests : BaseIntegrationTest() {
         }
 
     }
+
 }
