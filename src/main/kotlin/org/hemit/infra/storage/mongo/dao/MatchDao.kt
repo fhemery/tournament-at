@@ -13,6 +13,6 @@ class MatchDao(var opponent1: ParticipantDao? = null, var opponent2: Participant
     }
 
     fun toMatch(): Match {
-        return Match(this.opponent1?.toParticipant(), this.opponent2?.toParticipant())
+        return Match(this.opponent1?.toParticipant(), this.opponent2?.toParticipant(), 0)
     }
 }

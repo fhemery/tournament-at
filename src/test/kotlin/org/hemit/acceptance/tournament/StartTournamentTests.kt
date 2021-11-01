@@ -120,6 +120,7 @@ class StartTournamentTests : BaseAcceptanceTest() {
             get { tournament }.isA<OngoingTournament>().and {
                 get { phases.first() }.isA<RoundRobinTournamentPhase>()
                     .get { matches }.hasSize(6)
+                    .get { filter { it.id == 0 } }.hasSize(0)
             }
         }
     }
