@@ -1,4 +1,4 @@
-package org.hemit.outsidein
+package org.hemit.controllerToPorts
 
 import org.hemit.domain.ports.input.commands.CreateTournamentCommand
 import org.hemit.domain.ports.input.queries.GetTournamentQuery
