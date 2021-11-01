@@ -6,7 +6,7 @@ class TournamentBuilder {
             return RegisteredTournament(
                 id,
                 tournamentToCreate.name,
-                maxParticipants = tournamentToCreate.maxParticipants
+                maxParticipants = if (tournamentToCreate.maxParticipants != 0) tournamentToCreate.maxParticipants else 1024
             )
         }
     }

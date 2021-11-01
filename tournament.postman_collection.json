@@ -1,0 +1,150 @@
+{
+	"info": {
+		"_postman_id": "3cf0a5bb-f89d-4244-b798-74ef0729e446",
+		"name": "Tournaments",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create tournament",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Atp-bdx tournament\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/tournaments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tournaments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get tournament",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/tournaments/0f6754d7-ebcb-45ff-85d3-965f8946b506",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tournaments",
+						"0f6754d7-ebcb-45ff-85d3-965f8946b506"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create phase",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"type\": \"RoundRobin\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/tournaments/0f6754d7-ebcb-45ff-85d3-965f8946b506/phases",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tournaments",
+						"0f6754d7-ebcb-45ff-85d3-965f8946b506",
+						"phases"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add participant",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Novak Djokovic\",\r\n    \"elo\": 2000\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/tournaments/0f6754d7-ebcb-45ff-85d3-965f8946b506/participants",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tournaments",
+						"0f6754d7-ebcb-45ff-85d3-965f8946b506",
+						"participants"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Start tournament",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"status\": \"Started\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/tournaments/0f6754d7-ebcb-45ff-85d3-965f8946b506",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tournaments",
+						"0f6754d7-ebcb-45ff-85d3-965f8946b506"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -10,11 +10,10 @@ class RegisteredTournament(
     name: String,
     participants: List<Participant> = emptyList(),
     phases: List<TournamentPhase> = emptyList(),
-    val maxParticipants: Int = Int.MAX_VALUE
+    val maxParticipants: Int = 1024
 ) : Tournament(id, name, phases, participants) {
 
     override val status: TournamentStatus = TournamentStatus.NotStarted
-
 
     fun addParticipant(participant: Participant) {
         ParticipantPolicy().checkParticipantCanBeAdded(this, participant)
