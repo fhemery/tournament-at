@@ -1,12 +1,10 @@
 package org.hemit.integration
 
 import io.quarkus.test.junit.QuarkusTest
-import io.restassured.module.kotlin.extensions.Given
-import io.restassured.module.kotlin.extensions.Then
-import io.restassured.module.kotlin.extensions.When
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import org.hemit.infra.api.dto.*
+import org.hemit.infra.api.dto.ParticipantDto
+import org.hemit.infra.api.dto.TournamentPhaseDto
+import org.hemit.infra.api.dto.TournamentPhaseTypeDto
+import org.hemit.infra.api.dto.TournamentStatusDto
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.hasSize
@@ -78,17 +76,6 @@ class StartTournamentTests {
 
         startTournamentReturnsStatusCode(id, 204)
         startTournamentReturnsStatusCode(id, 400)
-    }
-
-    private fun startTournamentReturnsStatusCode(id: String, errorCode: Int) {
-        Given {
-            contentType("application/json")
-            body(Json.encodeToString(TournamentToUpdateDto(TournamentStatusDto.Started)))
-        } When {
-            patch("tournaments/$id")
-        } Then {
-            statusCode(errorCode)
-        }
     }
 
 }

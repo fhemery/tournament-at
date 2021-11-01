@@ -6,10 +6,7 @@ import io.restassured.module.kotlin.extensions.When
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.hemit.infra.api.dto.ParticipantDto
-import org.hemit.infra.api.dto.TournamentDto
-import org.hemit.infra.api.dto.TournamentPhaseDto
-import org.hemit.infra.api.dto.TournamentToCreateDto
+import org.hemit.infra.api.dto.*
 
 fun createTournament(tournament: TournamentToCreateDto = TournamentToCreateDto("Unreal tournament", 1024)): String {
     val response = Given {
@@ -53,5 +50,16 @@ fun addPhase(id: String, tournamentPhaseDto: TournamentPhaseDto) {
         post("/tournaments/$id/phases")
     } Then {
         statusCode(204)
+    }
+}
+
+fun startTournamentReturnsStatusCode(id: String, errorCode: Int) {
+    Given {
+        contentType("application/json")
+        body(Json.encodeToString(TournamentToUpdateDto(TournamentStatusDto.Started)))
+    } When {
+        patch("tournaments/$id")
+    } Then {
+        statusCode(errorCode)
     }
 }
