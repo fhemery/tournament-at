@@ -59,12 +59,12 @@ class StartTournamentTests {
 
         startTournamentReturnsStatusCode(id, 204)
 
-        println("tournament id is $id")
         val tournament = getTournament(id)
         expectThat(tournament) {
             get { status }.isEqualTo(TournamentStatusDto.Started)
             get { phases }.hasSize(1)
             get { phases.first().matches }.isNotNull().hasSize(1)
+                .get { first().id }.isEqualTo("1")
         }
     }
 

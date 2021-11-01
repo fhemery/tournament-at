@@ -25,7 +25,7 @@ enum class TournamentStatusDto { NotStarted, Started, Finished }
 class TournamentPhaseDto(@JsonProperty("type") val type: TournamentPhaseTypeDto, val matches: List<MatchDto>? = null)
 
 @Serializable
-class MatchDto(val opponent1: ParticipantDto?, val opponent2: ParticipantDto?)
+class MatchDto(val opponent1: ParticipantDto?, val opponent2: ParticipantDto?, val id: String)
 
 @Serializable
 enum class TournamentPhaseTypeDto { RoundRobin }
@@ -62,7 +62,8 @@ fun toMatches(matches: List<Match>): List<MatchDto>? {
 fun toMatch(match: Match): MatchDto {
     return MatchDto(
         if (match.opponent1 != null) toParticipantDto(match.opponent1) else null,
-        if (match.opponent2 != null) toParticipantDto(match.opponent2) else null
+        if (match.opponent2 != null) toParticipantDto(match.opponent2) else null,
+        ""
     )
 }
 
