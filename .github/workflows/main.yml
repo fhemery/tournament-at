@@ -33,11 +33,14 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
+      - name: Set permission
+        run: chmod +x gradlew
+
       - name: Execute Gradle build
         run: ./gradlew build -x test
 
       - name: Run tests
-        run: ./gradlew build -x test
+        run: ./gradlew test
 
       - name: ktlint
         uses: vroy/gha-kotlin-linter@v1
