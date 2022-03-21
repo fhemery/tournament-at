@@ -1,7 +1,7 @@
 package org.hemit.infra.idgeneration
 
 import org.hemit.domain.ports.output.IdGeneration
-import java.util.*
+import java.util.UUID
 import javax.enterprise.context.ApplicationScoped
 
 @ApplicationScoped

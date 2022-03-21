@@ -23,7 +23,6 @@ class TournamentTests {
         val tournamentStorageStub = TournamentStorageStub()
         tournamentResource.getTournamentQuery = GetTournamentQuery(tournamentStorageStub)
         tournamentResource.createTournamentCommand = CreateTournamentCommand(tournamentStorageStub, IdGeneratorStub())
-
     }
 
     @Test
@@ -39,6 +38,5 @@ class TournamentTests {
         val id = creationResponse.headers["location"]!!.first().toString().split("/").last()
         val tournament = tournamentResource.getTournament(id)
         expectThat(tournament.name).isEqualTo("Unreal tournament")
-
     }
 }

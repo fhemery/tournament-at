@@ -1,9 +1,9 @@
 package org.hemit.domain.model.policies
 
 import org.hemit.domain.model.Participant
-import org.hemit.domain.model.tournament.RegisteredTournament
 import org.hemit.domain.model.exceptions.MaximumNumberOfParticipantsReachedException
 import org.hemit.domain.model.exceptions.ParticipantAlreadyExistsForTournamentError
+import org.hemit.domain.model.tournament.RegisteredTournament
 
 class ParticipantPolicy {
     fun checkParticipantCanBeAdded(registeredTournament: RegisteredTournament, participant: Participant) {
@@ -16,5 +16,4 @@ class ParticipantPolicy {
             }
         }
     }
-
 }

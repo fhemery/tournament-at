@@ -1,10 +1,10 @@
 package org.hemit.domain.ports.input.commands
 
-import org.hemit.domain.model.tournament.RegisteredTournament
-import org.hemit.domain.model.tournament.TournamentStatus
 import org.hemit.domain.model.exceptions.NotEnoughParticipantsException
 import org.hemit.domain.model.exceptions.TournamentAlreadyStartedException
 import org.hemit.domain.model.exceptions.TournamentHasNoPhaseException
+import org.hemit.domain.model.tournament.RegisteredTournament
+import org.hemit.domain.model.tournament.TournamentStatus
 import org.hemit.domain.ports.output.GetTournamentResult
 import org.hemit.domain.ports.output.TournamentStorage
 import javax.enterprise.context.ApplicationScoped
@@ -40,7 +40,6 @@ class StartTournamentCommand() {
         } catch (e: TournamentHasNoPhaseException) {
             return StartTournamentResult.NoPhaseDefined
         }
-
 
         return StartTournamentResult.Success
     }

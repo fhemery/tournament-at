@@ -39,7 +39,7 @@ fun addParticipantToTournament(id: String, participantDto: ParticipantDto) {
         contentType("application/json")
         body(Json.encodeToString(participantDto))
     } When {
-        post("tournaments/${id}/participants")
+        post("tournaments/$id/participants")
     } Then {
         statusCode(204)
     }

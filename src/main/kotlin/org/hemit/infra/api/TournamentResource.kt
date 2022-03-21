@@ -14,7 +14,15 @@ import org.hemit.infra.api.dto.toDto
 import java.net.URI
 import javax.inject.Inject
 import javax.validation.Valid
-import javax.ws.rs.*
+import javax.ws.rs.BadRequestException
+import javax.ws.rs.Consumes
+import javax.ws.rs.GET
+import javax.ws.rs.NotFoundException
+import javax.ws.rs.PATCH
+import javax.ws.rs.POST
+import javax.ws.rs.Path
+import javax.ws.rs.PathParam
+import javax.ws.rs.Produces
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 import javax.ws.rs.core.Response.created
@@ -45,8 +53,10 @@ class TournamentResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     fun createTournament(@Valid tournament: TournamentToCreateDto): Response {
-        when (val result =
-            createTournamentCommand.execute(TournamentToCreate(tournament.name, tournament.maxParticipants))) {
+        when (
+            val result =
+                createTournamentCommand.execute(TournamentToCreate(tournament.name, tournament.maxParticipants))
+        ) {
             is CreateTournamentResult.Success -> return created(URI.create("tournaments/${result.tournamentId}")).build()
         }
     }
@@ -67,5 +77,3 @@ class TournamentResource {
         }
     }
 }
-
-

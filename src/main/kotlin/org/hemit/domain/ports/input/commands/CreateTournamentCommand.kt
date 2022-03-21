@@ -23,7 +23,6 @@ class CreateTournamentCommand() {
     @Inject
     lateinit var idGeneratorPort: IdGeneration
 
-
     fun execute(tournamentToCreate: TournamentToCreate): CreateTournamentResult {
         val tournament = TournamentBuilder.from(tournamentToCreate, idGeneratorPort.generateId())
         tournamentStoragePort.saveTournament(tournament)

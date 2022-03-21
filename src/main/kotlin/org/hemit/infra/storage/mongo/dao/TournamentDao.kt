@@ -18,7 +18,6 @@ class TournamentDao() : PanacheMongoEntity() {
                 TournamentStatus.Started -> fromOngoingTournament(tournament as OngoingTournament)
                 else -> TODO("Implement finished tournament")
             }
-
         }
 
         private fun fromOngoingTournament(ongoingTournament: OngoingTournament): TournamentDao {

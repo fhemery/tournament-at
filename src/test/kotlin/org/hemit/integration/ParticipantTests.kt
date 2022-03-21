@@ -40,7 +40,6 @@ class ParticipantTests {
         }
     }
 
-
     @Test
     fun `should return 400 if participant was already added`() {
         val id = createTournament()

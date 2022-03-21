@@ -58,5 +58,4 @@ class CreateTournamentTests : BaseAcceptanceTest() {
         expectThat(result).isA<CreateTournamentResult.Success>().get { tournamentId }.isNotEqualTo("")
         return (result as CreateTournamentResult.Success).tournamentId
     }
-
 }

@@ -41,5 +41,4 @@ class PhaseTests : BaseIntegrationTest() {
             get { first().type }.isEqualTo(TournamentPhaseTypeDto.RoundRobin)
         }
     }
-
 }

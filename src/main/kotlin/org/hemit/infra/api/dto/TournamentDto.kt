@@ -2,7 +2,11 @@ package org.hemit.infra.api.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import kotlinx.serialization.Serializable
-import org.hemit.domain.model.*
+import org.hemit.domain.model.Match
+import org.hemit.domain.model.Participant
+import org.hemit.domain.model.RoundRobinTournamentPhase
+import org.hemit.domain.model.TournamentPhase
+import org.hemit.domain.model.TournamentPhaseType
 import org.hemit.domain.model.tournament.Tournament
 import org.hemit.domain.model.tournament.TournamentStatus
 
@@ -29,7 +33,6 @@ class MatchDto(val opponent1: ParticipantDto?, val opponent2: ParticipantDto?)
 
 @Serializable
 enum class TournamentPhaseTypeDto { RoundRobin }
-
 
 private fun toTournamentStatusDto(status: TournamentStatus): TournamentStatusDto {
     return when (status) {

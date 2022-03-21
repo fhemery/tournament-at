@@ -6,7 +6,11 @@ import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.hemit.infra.api.dto.*
+import org.hemit.infra.api.dto.ParticipantDto
+import org.hemit.infra.api.dto.TournamentPhaseDto
+import org.hemit.infra.api.dto.TournamentPhaseTypeDto
+import org.hemit.infra.api.dto.TournamentStatusDto
+import org.hemit.infra.api.dto.TournamentToUpdateDto
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.hasSize
@@ -90,6 +94,4 @@ class StartTournamentTests {
             statusCode(errorCode)
         }
     }
-
 }
-

@@ -6,7 +6,12 @@ import org.hemit.domain.ports.input.commands.AddParticipantCommand
 import org.hemit.domain.ports.input.commands.AddParticipantCommandResult
 import org.hemit.infra.api.dto.ParticipantDto
 import javax.inject.Inject
-import javax.ws.rs.*
+import javax.ws.rs.BadRequestException
+import javax.ws.rs.Consumes
+import javax.ws.rs.NotFoundException
+import javax.ws.rs.POST
+import javax.ws.rs.Path
+import javax.ws.rs.PathParam
 import javax.ws.rs.core.MediaType
 
 @Path("tournaments/{tournamentId}/participants")

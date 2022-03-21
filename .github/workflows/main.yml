@@ -44,6 +44,3 @@ jobs:
 
       - name: ktlint
         uses: vroy/gha-kotlin-linter@v1
-
-      - name: Static analysis
-        uses: natiginfo/action-detekt-all@1.20.0-RC1
